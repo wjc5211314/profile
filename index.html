@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 | Portfolio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #334155;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --accent-color: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.08);
+            
+            --tag-bg: #f1f5f9;
+            --tag-text: #475569;
+            --tag-border: #e2e8f0;
+            --tag-bg-hover: #e2e8f0;
+            --tag-border-hover: #cbd5e1;
+
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+            
+            --edit-bg-highlight: rgba(37, 99, 235, 0.03);
+            --edit-bg-focus: rgba(37, 99, 235, 0.06);
+            --edit-outline: #3b82f6;
+        }
+
+        html.dark {
+            --bg-primary: #090d16;
+            --bg-secondary: #121824;
+            --text-primary: #cbd5e1;
+            --text-heading: #f8fafc;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            
+            --tag-bg: #1e293b;
+            --tag-text: #cbd5e1;
+            --tag-border: #334155;
+            --tag-bg-hover: #334155;
+            --tag-border-hover: #475569;
+
+            --card-bg: #0f172a;
+            --card-border: #1e293b;
+            --card-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+            
+            --edit-bg-highlight: rgba(59, 130, 246, 0.04);
+            --edit-bg-focus: rgba(59, 130, 246, 0.08);
+            --edit-outline: #60a5fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Container & Grid Layout */
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 6rem 1.5rem;
+        }
+
+        /* Header Style */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(var(--bg-primary), 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .header-container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0.85rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-btn:hover {
+            color: var(--text-heading);
+            background-color: var(--bg-secondary);
+        }
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            gap: 0.35rem;
+            font-family: inherit;
+        }
+        .btn-outline:hover {
+            border-color: var(--text-heading);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+        .profile-header {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        .avatar-placeholder {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--text-muted);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .editing-active.avatar-placeholder {
+            cursor: pointer;
+            border: 1.5px dashed var(--edit-outline);
+        }
+        .editing-active.avatar-placeholder:hover::after {
+            content: "更换头像";
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .avatar-icon {
+            width: 32px;
+            height: 32px;
+        }
+        .profile-info {
+            flex-grow: 1;
+        }
+        .profile-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+        .profile-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--accent-color);
+            margin-bottom: 0.75rem;
+        }
+        .profile-bio {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Contact Details */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+        a.contact-card:hover {
+            border-color: var(--accent-color);
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 8px var(--accent-glow);
+        }
+        .contact-card svg {
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .contact-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        .contact-val {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-heading);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .no-link {
+            cursor: default;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-top: 3.5rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-heading);
+            text-transform: uppercase;
+        }
+        .section-title span {
+            flex-shrink: 0;
+        }
+        .title-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* Experience (Timeline) */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0px;
+            top: 6px;
+            bottom: 6px;
+            width: 1px;
+            background-color: var(--border-color);
+        }
+        .timeline-item {
+            position: relative;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -13px;
+            top: 6px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: var(--bg-primary);
+            border: 2px solid var(--accent-color);
+        }
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.25rem 1rem;
+        }
+        .company-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .company-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-heading);
+        }
+        .company-dept-role {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.1rem;
+        }
+        .company-dept-role .dept {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .timeline-date {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background-color: var(--bg-secondary);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        .item-description {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+        .work-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0.75rem;
+        }
+        .work-list li {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+        }
+        .work-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+        
+        /* Technology Badges */
+        .tags-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: 0.5rem;
+        }
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            border: 1px solid var(--tag-border);
+            font-weight: 500;
+            transition: all 0.15s ease;
+            display: inline-block;
+        }
+        .tag:hover {
+            background-color: var(--tag-bg-hover);
+            border-color: var(--tag-border-hover);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.25rem;
+        }
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s ease;
+        }
+        .project-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 12px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .project-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-heading);
+        }
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .project-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            background-color: var(--accent-glow);
+            color: var(--accent-color);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+        }
+        .project-link-badge {
+            transition: all 0.2s ease;
+        }
+        .project-link-badge:hover {
+            filter: brightness(0.92);
+            box-shadow: 0 2px 6px var(--accent-glow);
+        }
+        .project-desc-intro {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-heading);
+            margin-bottom: 0.5rem;
+        }
+        .project-desc-detail {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Skills Categories */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .skill-column {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .skill-col-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            color: var(--text-heading);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.4rem;
+        }
+        .skill-list {
+            list-style: none;
+        }
+        .skill-list li {
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .skill-list li::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            flex-shrink: 0;
+        }
+
+        /* Awards & Certificates */
+        .awards-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        .awards-list {
+            list-style-type: none;
+        }
+        .awards-list li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .awards-list li::before {
+            content: "🏆";
+            position: absolute;
+            left: 0;
+            font-size: 0.85rem;
+        }
+        .awards-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Inline Editing Visual Styles */
+        .editable {
+            transition: background-color 0.2s ease, outline 0.2s ease;
+        }
+        .editing-active {
+            outline: 1.5px dashed var(--edit-outline);
+            outline-offset: 3px;
+            background-color: var(--edit-bg-highlight);
+            cursor: text;
+            border-radius: 3px;
+        }
+        .editing-active:focus {
+            background-color: var(--edit-bg-focus);
+            outline: 2px solid var(--accent-color);
+            outline-offset: 3px;
+        }
+        /* Custom Empty Placeholder rule */
+        [contenteditable="true"]:empty:before {
+            content: attr(placeholder);
+            color: var(--text-muted);
+            opacity: 0.65;
+            font-style: italic;
+        }
+
+        /* Floating Editor Action Bar */
+        .editor-actions-bar {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--text-heading);
+            color: var(--bg-primary);
+            padding: 0.85rem 1.5rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid var(--border-color);
+        }
+        .editor-actions-bar.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .editor-msg {
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .editor-btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-btn {
+            border: none;
+            cursor: pointer;
+            padding: 0.4rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s ease;
+        }
+        .btn-cancel {
+            background-color: transparent;
+            color: var(--bg-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-cancel:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-save {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+        .btn-save:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+        }
+        .toast {
+            background-color: var(--text-heading);
+            color: var(--bg-primary);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .timeline-date {
+                margin-top: 0.25rem;
+            }
+            .editor-actions-bar {
+                width: calc(100% - 2rem);
+                border-radius: 12px;
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+                bottom: 1rem;
+            }
+            .editor-btn-group {
+                width: 100%;
+            }
+            .editor-btn-group button {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="brand">
+                <span class="editable" id="nav-brand-name" placeholder="个人主页">My Homepage</span>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="nav-btn" aria-label="切换主题">
+                    <i data-lucide="moon" style="width: 18px; height: 18px;"></i>
+                </button>
+                <button id="edit-toggle" class="nav-btn btn-outline" onclick="toggleEditMode()">
+                    <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+                    <span>编辑资料</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container">
+
+        <!-- Hero / Profile Intro Section -->
+        <section class="hero-section">
+            <div class="profile-header">
+                <div class="avatar-placeholder" id="avatar-container">
+                    <i data-lucide="user" class="avatar-icon"></i>
+                </div>
+                <input type="file" id="avatar-input" accept="image/*" style="display: none;" />
+                <div class="profile-info">
+                    <h1 class="profile-name">
+                        <span class="editable" id="user-name" placeholder="您的名字">王嘉诚 (Your Name)</span>
+                    </h1>
+                    <p class="profile-title">
+                        <span class="editable" id="user-title" placeholder="您的求职意向/核心岗位">智能体研发 / 大模型算法工程师</span>
+                    </p>
+                    <p class="profile-bio">
+                        <span class="editable" id="user-bio" placeholder="一句话自我介绍">南京工业大学硕士研究生。具有 vLLM 本地部署、国产昇腾算力资源调度与多模态微调、AI 知识图谱及全栈开发实战经验。致力于将大模型与知识图谱技术融合，打造高效智能体及工程化系统。</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Contact Info Grid -->
+            <div class="contact-grid">
+                <a href="mailto:your.email@example.com" class="contact-card" id="email-link">
+                    <i data-lucide="mail"></i>
+                    <div class="contact-details">
+                        <span class="contact-label">电子邮箱</span>
+                        <span class="contact-val editable" id="email-text" placeholder="your.email@example.com">3164471462@qq.com</span>
+                    </div>
+                </a>
+                <a href="tel:+86-138-0000-0000" class="contact-card" id="phone-link">
+                    <i data-lucide="phone"></i>
+                    <div class="contact-details">
+                        <span class="contact-label">联系电话</span>
+                        <span class="contact-val editable" id="phone-text" placeholder="138-xxxx-xxxx">15556208931</span>
+                    </div>
+                </a>
+                <a href="https://github.com/yourusername" target="_blank" class="contact-card" id="github-link">
+                    <i data-lucide="github"></i>
+                    <div class="contact-details">
+                        <span class="contact-label">GitHub</span>
+                        <span class="contact-val editable" id="github-text" placeholder="github.com/yourusername">github.com/yourusername</span>
+                    </div>
+                </a>
+                <div class="contact-card no-link">
+                    <i data-lucide="message-square"></i>
+                    <div class="contact-details">
+                        <span class="contact-label">微信</span>
+                        <span class="contact-val editable" id="wechat-text" placeholder="your_wechat_id">15556208931</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Internship Experience -->
+        <section>
+            <h2 class="section-title">
+                <span class="editable" id="sec-title-experience" placeholder="实习经历">实习经历 / Experiences</span>
+                <span class="title-line"></span>
+            </h2>
+            <div class="timeline">
+                
+                <!-- Internship 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-header">
+                        <div class="company-info">
+                            <span class="company-name editable" id="exp1-company" placeholder="公司名称">上海华用电子</span>
+                            <span class="company-dept-role">
+                                <span class="dept editable" id="exp1-dept" placeholder="部门/项目组">AI智学平台 - 项目组</span> | 
+                                <span class="role editable" id="exp1-role" placeholder="岗位名称">智能体开发实习生</span>
+                            </span>
+                        </div>
+                        <span class="timeline-date editable" id="exp1-date" placeholder="实习时间">2025.11 - 2026.03</span>
+                    </div>
+                    <ul class="work-list">
+                        <li class="editable" id="exp1-work1" placeholder="工作内容">基于 <code>vLLM</code> 框架本地部署大模型，通过 <code>Prompt 工程</code> 引导模型输出结构化 <code>Markdown</code> 讲义；自主设计 <code>Markdown</code> 至 <code>HTML</code> 的转换管线，利用 <code>iframe</code> 动态注入技术实现前端可交互的可视化讲解界面。</li>
+                        <li class="editable" id="exp1-work2" placeholder="工作内容">基于 <code>iText html2pdf</code> 与 <code>Apache POI</code>（<code>XSLF API</code>）开发一键导出功能，实现讲义 <code>PDF</code> 与 <code>PPTX</code> 双格式的本地下载；解决跨平台中文字体渲染缺失痛点，采用 <code>STSong-Light</code> 内置字体与系统字体 <code>Fallback</code> 兜底策略，保障导出的中文排版正常显示。</li>
+                        <li class="editable" id="exp1-work3" placeholder="工作内容">设计并构建 <code>AI 知识图谱系统</code>。利用大模型自动提取文本内容关键词并进行实体关系建模，生成轻量化节点关系图；支持前端图形化拓扑结构探索，并基于图结构实现按主题的关联内容推荐。</li>
+                        <li class="editable" id="exp1-work4" placeholder="工作内容">开发口袋式虚拟实验硬件与 Web 客户端的<code>数据桥接工具</code>。采用 <code>WebSocket 协议</code> 与 <code>MQTT 协议</code> 搭建长连接通信链路，实现本地硬件状态数据与 Web 端的高频交互；设计数据序列化方案与状态机，在前端以动画形式实时渲染引脚插入等硬件动作，并支持实验过程的历史数据回放。</li>
+                    </ul>
+                    <div class="tags-wrapper">
+                        <span class="tag editable" id="exp1-tag1" placeholder="标签">vLLM</span>
+                        <span class="tag editable" id="exp1-tag2" placeholder="标签">Prompt 工程</span>
+                        <span class="tag editable" id="exp1-tag3" placeholder="标签">Markdown2HTML</span>
+                        <span class="tag editable" id="exp1-tag4" placeholder="标签">iText html2pdf</span>
+                        <span class="tag editable" id="exp1-tag5" placeholder="标签">Apache POI</span>
+                        <span class="tag editable" id="exp1-tag6" placeholder="标签">AI 知识图谱</span>
+                        <span class="tag editable" id="exp1-tag7" placeholder="标签">WebSocket</span>
+                        <span class="tag editable" id="exp1-tag8" placeholder="标签">MQTT</span>
+                    </div>
+                </div>
+
+                <!-- Internship 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-header">
+                        <div class="company-info">
+                            <span class="company-name editable" id="exp2-company" placeholder="公司名称">中科弘云（中科深算南京分公司）</span>
+                            <span class="company-dept-role">
+                                <span class="dept editable" id="exp2-dept" placeholder="部门/项目组">深算全功能智算云服务平台 - 研发组</span> | 
+                                <span class="role editable" id="exp2-role" placeholder="岗位名称">算法实习生</span>
+                            </span>
+                        </div>
+                        <span class="timeline-date editable" id="exp2-date" placeholder="实习时间">2026.03 - 2026.07</span>
+                    </div>
+                    <ul class="work-list">
+                        <li class="editable" id="exp2-work1" placeholder="工作内容">基于 <code>Docker</code> 与 <code>Kubernetes</code>（<code>K8s</code>）实现大模型服务在<code>华为昇腾 910B/910C/310P</code>与<code>海光 DCU</code>中的容器化部署与资源调度；负责 Qwen 全系列、DeepSeekV4-Flash、TTS 语音合成及视觉小模型（YOLO、ConvNext、paddleOCR 等）使用 <code>vllm-ascend</code> 推理框架在平台的部署适配。针对视觉模型定制化输出格式需求，采用类继承与方法重写方式进行低耦合二次开发。</li>
+                        <li class="editable" id="exp2-work2" placeholder="工作内容">负责 114 项目合同审查与商选服务工作流的编排优化。针对批量文件处理的性能瓶颈，基于 <code>FastAPI</code> 封装大模型与 <code>MinerU</code> 服务，结合多线程与<code>异步机制</code>重构任务调度架构，解决多文档密集型 <code>I/O</code> 阻塞痛点。批量文件总处理耗时缩短至 1/3，单机并发接口吞吐量提升 3 倍。</li>
+                        <li class="editable" id="exp2-work3" placeholder="工作内容">在华为昇腾 910B 上落地 <code>PD 分离</code>推理架构，以 <code>1P3D</code> 模式部署 Qwen3 系列模型；深入排查并验证了该架构对 Qwen 3.5/3.6 等混合架构模型的不兼容。同时，针对<code>昇腾 310P</code>运行 Qwen3.6 时的原生算子不兼容、以及国产 <code>NPU</code> 对 <code>FP8</code> 量化支持不完善等底层硬件限制进行链路定界，输出兼容性报告。</li>
+                        <li class="editable" id="exp2-work4" placeholder="工作内容">对 <code>Qwen3</code> 系列 <code>Embedding</code> 和 <code>Re-ranker</code> 模型（0.6B/4B/8B）在国产 <code>NPU</code> 上的多并发压测，分析不同 <code>Batch Size</code> 对 <code>QPS</code> 和首 Token 延迟（<code>TTFT</code>）的影响。</li>
+                        <li class="editable" id="exp2-work5" placeholder="工作内容">负责大模型微调的数据准备与训练推进。完成偏好调优、偏好对齐、文生图及图像理解等多模态任务的数据集清洗与格式转换，参与模型微调训练全流程；跟进前沿技术，调研 <code>Graphify</code>、<code>LightRAG</code> 及英伟达 <code>KV Cache</code> 压缩技术的平替可行性。</li>
+                    </ul>
+                    <div class="tags-wrapper">
+                        <span class="tag editable" id="exp2-tag1" placeholder="标签">Docker / K8s</span>
+                        <span class="tag editable" id="exp2-tag2" placeholder="标签">FastAPI</span>
+                        <span class="tag editable" id="exp2-tag3" placeholder="标签">vLLM-Ascend</span>
+                        <span class="tag editable" id="exp2-tag4" placeholder="标签">昇腾 910B/310P</span>
+                        <span class="tag editable" id="exp2-tag5" placeholder="标签">MinerU</span>
+                        <span class="tag editable" id="exp2-tag6" placeholder="标签">PD 分离</span>
+                        <span class="tag editable" id="exp2-tag7" placeholder="标签">NPU 压测</span>
+                        <span class="tag editable" id="exp2-tag8" placeholder="标签">模型微调</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Research & Projects -->
+        <section>
+            <h2 class="section-title">
+                <span class="editable" id="sec-title-projects" placeholder="科研与项目经历">科研与项目经历 / Projects</span>
+                <span class="title-line"></span>
+            </h2>
+            <div class="projects-grid">
+                
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-title editable" id="proj1-name" placeholder="项目名称">基于大模型增强的知识图谱实体对齐任务</span>
+                        <div class="project-meta">
+                            <span class="project-badge editable" id="proj1-badge1" placeholder="类型标签">学术研究</span>
+                            <span class="timeline-date editable" id="proj1-date" placeholder="项目时间">2024.01 - 2025.11</span>
+                        </div>
+                    </div>
+                    <p class="project-desc-intro editable" id="proj1-intro" placeholder="项目简述">项目描述：针对传统实体对齐方法语义理解不足及错误累积问题，提出一种基于 LLM 的迭代式循环增强对齐框架</p>
+                    <ul class="work-list">
+                        <li class="editable" id="proj1-detail1" placeholder="核心工作"><strong>候选集筛选</strong>：设计基于嵌入（Embedding）的召回模块，利用向量相似度快速从海量数据中筛选出高潜候选实体对，降低计算开销。</li>
+                        <li class="editable" id="proj1-detail2" placeholder="核心工作"><strong>语义增强与推理</strong>：构建基于 Qwen3-8B 的推理引擎，通过聚合实体的多跳邻居结构信息生成富含上下文的语义描述；利用 LLaMaFactory 框架对模型进行 LoRA 微调，使其能够结合描述信息与候选集输出最终对齐结果及推理依据。</li>
+                        <li class="editable" id="proj1-detail3" placeholder="成果/文章"><strong>科研成果</strong>：文章 “SynthEA: A Closed-Loop Framework Unifying Structural Embeddings and Large Language Models for Entity Alignment” <em>IEEE Transactions on Neural Networks and Learning Systems (TNNLS)</em>, Under Review, 2026.</li>
+                    </ul>
+                    <div class="tags-wrapper">
+                        <span class="tag editable" id="proj1-tag1" placeholder="标签">AI大模型</span>
+                        <span class="tag editable" id="proj1-tag2" placeholder="标签">知识图谱</span>
+                        <span class="tag editable" id="proj1-tag3" placeholder="标签">大模型微调</span>
+                        <span class="tag editable" id="proj1-tag4" placeholder="标签">实体对齐</span>
+                        <span class="tag editable" id="proj1-tag5" placeholder="标签">LLaMaFactory</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-title editable" id="proj2-name" placeholder="项目名称">多多工具箱（AI 驱动的课程设计与文档平台）</span>
+                        <div class="project-meta">
+                            <span class="project-badge"><span class="editable" id="proj2-badge-type-text" placeholder="类型标签">全栈 SaaS 平台</span></span>
+                            <a href="https://www.labcloud.com.cn" target="_blank" class="project-badge project-link-badge" id="proj2-link-container" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;">
+                                <i data-lucide="link" style="width: 11px; height: 11px;"></i>
+                                <span class="editable" id="proj2-link-text" placeholder="链接地址">www.labcloud.com.cn</span>
+                            </a>
+                            <span class="project-badge" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+                                <i data-lucide="users" style="width: 11px; height: 11px;"></i>
+                                <span class="editable" id="proj2-users-text" placeholder="用户规模">500+ 用户</span>
+                            </span>
+                            <span class="timeline-date editable" id="proj2-date" placeholder="项目时间">2026.04 - 至今</span>
+                        </div>
+                    </div>
+                    <p class="project-desc-intro editable" id="proj2-intro" placeholder="项目简述">项目描述：面向课程设计与毕设文档场景的全栈 SaaS 平台，集成 UML/软件工程图表智能绘制、毕设论文辅助生成、Markdown 标准化排版及 AIGC 文本优化等功能，已积累 500+ 活跃用户。</p>
+                    <ul class="work-list">
+                        <li class="editable" id="proj2-detail1" placeholder="核心工作"><strong>GoJS 图表生成</strong>：基于 GoJS 与大模型构建图表生成链路。支持 SQL（JSqlParser）解析自动生成 ER 图；支持自然语言描述输出结构化 JSON 并渲染用例图、类图等 20+ 种交互图表；支持上传源码 AI 预摘要后自动生成 19 类工程图表。</li>
+                        <li class="editable" id="proj2-detail2" placeholder="核心工作"><strong>Markdown 排版管线</strong>：基于 CommonMark AST 解析 Markdown，结合 Apache POI（XWPF）映射标题、段落、表格等元素，实现 Word 文档自动化排版（含 LaTeX→OMML 公式转换等）。</li>
+                        <li class="editable" id="proj2-detail3" placeholder="核心工作"><strong>长文本生成与 SSE</strong>：针对大模型上下文限制，采用按章切分目录 + 分批调用 + SSE 流式输出；续写阶段注入已生成正文尾部上下文与定制 Prompt，保障章节衔接与结构一致。</li>
+                        <li class="editable" id="proj2-detail4" placeholder="核心工作"><strong>AIGC 降痕改写</strong>：构建 Prompt 模板与多轮改写流水线，通过句式重构、语气润色与细节增补提升文本自然度，兼顾高效率与学术写作规范。</li>
+                        <li class="editable" id="proj2-detail5" placeholder="基础架构"><strong>平台安全隔离</strong>：负责 Spring Security + JWT 鉴权、AI 调用配额与并发控制、IP 限流等平台核心安全能力的开发。</li>
+                    </ul>
+                    <div class="tags-wrapper">
+                        <span class="tag editable" id="proj2-tag1" placeholder="标签">Vue3</span>
+                        <span class="tag editable" id="proj2-tag2" placeholder="标签">Spring Boot</span>
+                        <span class="tag editable" id="proj2-tag3" placeholder="标签">GoJS</span>
+                        <span class="tag editable" id="proj2-tag4" placeholder="标签">SSE 流式</span>
+                        <span class="tag editable" id="proj2-tag5" placeholder="标签">CommonMark</span>
+                        <span class="tag editable" id="proj2-tag6" placeholder="标签">Spring Security</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Technical Skills Grid -->
+        <section>
+            <h2 class="section-title">
+                <span class="editable" id="sec-title-skills" placeholder="技术能力">专业技能 / Technical Skills</span>
+                <span class="title-line"></span>
+            </h2>
+            <div class="skills-grid">
+                
+                <!-- Category 1 -->
+                <div class="skill-column">
+                    <div class="skill-col-title editable" id="skill-col1-title" placeholder="技能分类">AI & 大模型</div>
+                    <ul class="skill-list">
+                        <li class="editable" id="skill1-item1" placeholder="具体技能">大模型推理部署 (vLLM / Ascend)</li>
+                        <li class="editable" id="skill1-item2" placeholder="具体技能">大模型微调 (LoRA / LLaMaFactory)</li>
+                        <li class="editable" id="skill1-item3" placeholder="具体技能">偏好调优与多模态数据集处理</li>
+                        <li class="editable" id="skill1-item4" placeholder="具体技能">RAG 向量检索与重排 (Embedding / Re-ranker)</li>
+                        <li class="editable" id="skill1-item5" placeholder="具体技能">知识图谱实体建模与对齐</li>
+                        <li class="editable" id="skill1-item6" placeholder="具体技能">Vibe Coding / 提示词辅助编程</li>
+                    </ul>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="skill-column">
+                    <div class="skill-col-title editable" id="skill-col2-title" placeholder="技能分类">工程 & 全栈</div>
+                    <ul class="skill-list">
+                        <li class="editable" id="skill2-item1" placeholder="具体技能">后端架构 (FastAPI / Spring Boot)</li>
+                        <li class="editable" id="skill2-item2" placeholder="具体技能">前端框架 (Vue3 / HTML5 / CSS)</li>
+                        <li class="editable" id="skill2-item3" placeholder="具体技能">图形库与可视化 (GoJS / Canvas / SVG)</li>
+                        <li class="editable" id="skill2-item4" placeholder="具体技能">异步任务 & 长连接 (WebSocket / MQTT)</li>
+                        <li class="editable" id="skill2-item5" placeholder="具体技能">文本 AST 解析与文档生成 (Apache POI)</li>
+                    </ul>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="skill-column">
+                    <div class="skill-col-title editable" id="skill-col3-title" placeholder="技能分类">云原生 & 硬件调优</div>
+                    <ul class="skill-list">
+                        <li class="editable" id="skill3-item1" placeholder="具体技能">云原生容器化 (Docker / Kubernetes)</li>
+                        <li class="editable" id="skill3-item2" placeholder="具体技能">国产算力加速 (昇腾 910B/310P, 海光 DCU)</li>
+                        <li class="editable" id="skill3-item3" placeholder="具体技能">高性能推理 (PD 分离架构, FP8 量化)</li>
+                        <li class="editable" id="skill3-item4" placeholder="具体技能">算力平台压测与硬件兼容性定界</li>
+                        <li class="editable" id="skill3-item5" placeholder="具体技能">大模型多线程并发与异步 I/O 调优</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Awards & Scholarships -->
+        <section>
+            <h2 class="section-title">
+                <span class="editable" id="sec-title-awards" placeholder="荣誉奖项">荣誉奖项 / Awards & Honors</span>
+                <span class="title-line"></span>
+            </h2>
+            <div class="awards-card">
+                <ul class="awards-list">
+                    <li class="editable" id="award-item1" placeholder="获奖奖项">大学英语四级 (CET-4) & 大学英语六级 (CET-6)</li>
+                    <li class="editable" id="award-item2" placeholder="获奖奖项">南京工业大学研究生二等奖学金</li>
+                    <li class="editable" id="award-item3" placeholder="获奖奖项">蓝桥杯全国软件和信息技术专业人才大赛 省级奖项</li>
+                    <li class="editable" id="award-item4" placeholder="获奖奖项">中国大学生计算机设计大赛 省级奖项</li>
+                    <li class="editable" id="award-item5" placeholder="获奖奖项">全国计算机能力挑战赛 C++ 组 省级一等奖 / 国家级奖项</li>
+                    <li class="editable" id="award-item6" placeholder="获奖奖项">全国大学生数学建模竞赛 国家级奖项</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; <span id="footer-year">2026</span> <span class="editable" id="footer-name" placeholder="您的名字">王嘉诚</span>. Hosted on GitHub Pages.</p>
+            <p style="font-size: 0.75rem; margin-top: 0.35rem; opacity: 0.8;"></p>
+        </footer>
+
+    </main>
+
+    <!-- Floating Editor Actions Bar -->
+    <div id="editor-actions" class="editor-actions-bar">
+        <div class="editor-msg">
+            <i data-lucide="info" style="width: 16px; height: 16px; color: var(--accent-color);"></i>
+            <span>正在编辑模式下修改内容...</span>
+        </div>
+        <div class="editor-btn-group">
+            <button class="action-btn btn-cancel" onclick="toggleEditMode(false)">
+                <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                <span>取消</span>
+            </button>
+            <button class="action-btn btn-save" onclick="exportHTML()">
+                <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+                <span>保存并下载 HTML</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Dynamically set current year in footer
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        // Check URL parameter to show/hide edit button
+        const editToggleBtn = document.getElementById('edit-toggle');
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('edit') === 'true') {
+            editToggleBtn.style.display = 'inline-flex';
+        } else {
+            editToggleBtn.style.display = 'none';
+        }
+
+        // Check user system preference
+        const savedTheme = localStorage.getItem('portfolio-theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            document.documentElement.classList.add('dark');
+            updateThemeIcon(true);
+        } else {
+            document.documentElement.classList.remove('dark');
+            updateThemeIcon(false);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+            showNotification(isDark ? '已切换至暗色护眼主题' : '已切换至亮色简约主题');
+        });
+
+        function updateThemeIcon(isDark) {
+            themeToggleBtn.innerHTML = isDark 
+                ? '<i data-lucide="sun" style="width: 18px; height: 18px;"></i>' 
+                : '<i data-lucide="moon" style="width: 18px; height: 18px;"></i>';
+            lucide.createIcons();
+        }
+
+        // Inline Editing Logic
+        let isEditing = false;
+        const editableElements = document.querySelectorAll('.editable');
+        const editorActionsBar = document.getElementById('editor-actions');
+        const avatarContainer = document.getElementById('avatar-container');
+        const avatarInput = document.getElementById('avatar-input');
+
+        function toggleEditMode(forceState) {
+            isEditing = forceState !== undefined ? forceState : !isEditing;
+            
+            if (isEditing) {
+                editableElements.forEach(el => {
+                    el.setAttribute('contenteditable', 'true');
+                    el.classList.add('editing-active');
+                });
+                if (avatarContainer) {
+                    avatarContainer.classList.add('editing-active');
+                }
+                editToggleBtn.innerHTML = '<i data-lucide="eye" style="width: 14px; height: 14px;"></i><span>预览模式</span>';
+                editToggleBtn.classList.add('btn-active');
+                editorActionsBar.classList.add('show');
+                showNotification('编辑模式已开启，您可以点击网页虚线框文字修改，或点击头像上传照片。');
+            } else {
+                editableElements.forEach(el => {
+                    el.setAttribute('contenteditable', 'false');
+                    el.classList.remove('editing-active');
+                });
+                if (avatarContainer) {
+                    avatarContainer.classList.remove('editing-active');
+                }
+                editToggleBtn.innerHTML = '<i data-lucide="edit-3" style="width: 14px; height: 14px;"></i><span>编辑资料</span>';
+                editToggleBtn.classList.remove('btn-active');
+                editorActionsBar.classList.remove('show');
+                showNotification('已退出编辑模式');
+            }
+            lucide.createIcons();
+        }
+
+        // Avatar Upload Event Listeners
+        if (avatarContainer && avatarInput) {
+            avatarContainer.addEventListener('click', () => {
+                if (isEditing) {
+                    avatarInput.click();
+                }
+            });
+
+            avatarInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    // Check file size (e.g. limit to 2MB to keep HTML size reasonable)
+                    if (file.size > 2 * 1024 * 1024) {
+                        showNotification('照片文件过大，建议选择 2MB 以下的图片以保持网页轻快。');
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        avatarContainer.innerHTML = `<img src="${evt.target.result}" alt="Avatar" class="avatar-img" id="avatar-img" />`;
+                        showNotification('头像更换成功！保存后将直接嵌入 HTML 中。');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Synchronize contact info link attributes with text content before saving
+        function syncAttributes() {
+            // Email Link Sync
+            const emailText = document.getElementById('email-text').innerText.trim();
+            const emailLink = document.getElementById('email-link');
+            if (emailText && emailLink) {
+                emailLink.setAttribute('href', 'mailto:' + emailText);
+            }
+
+            // Phone Link Sync
+            const phoneText = document.getElementById('phone-text').innerText.trim();
+            const phoneLink = document.getElementById('phone-link');
+            if (phoneText && phoneLink) {
+                phoneLink.setAttribute('href', 'tel:' + phoneText.replace(/\s+/g, ''));
+            }
+
+            // GitHub Link Sync
+            const githubText = document.getElementById('github-text').innerText.trim();
+            const githubLink = document.getElementById('github-link');
+            if (githubText && githubLink) {
+                let url = githubText;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                githubLink.setAttribute('href', url);
+            }
+
+            // Project Link Sync
+            const projLinkText = document.getElementById('proj2-link-text');
+            const projLink = document.getElementById('proj2-link-container');
+            if (projLinkText && projLink) {
+                let url = projLinkText.innerText.trim();
+                if (url) {
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'https://' + url;
+                    }
+                    projLink.setAttribute('href', url);
+                }
+            }
+        }
+
+        // Export/Download HTML logic
+        function exportHTML() {
+            // Sync all link href attributes
+            syncAttributes();
+
+            // Disable editing state visually
+            editableElements.forEach(el => {
+                el.setAttribute('contenteditable', 'false');
+                el.classList.remove('editing-active');
+            });
+            if (avatarContainer) {
+                avatarContainer.classList.remove('editing-active');
+            }
+
+            // Clone document elements
+            const clone = document.documentElement.cloneNode(true);
+            
+            // Clean up transient elements (action bar, notifications) in the downloaded HTML
+            const clonedActionsBar = clone.querySelector('#editor-actions');
+            if (clonedActionsBar) {
+                clonedActionsBar.classList.remove('show');
+            }
+
+            const clonedEditToggle = clone.querySelector('#edit-toggle');
+            if (clonedEditToggle) {
+                clonedEditToggle.innerHTML = '<i data-lucide="edit-3" style="width: 14px; height: 14px;"></i><span>编辑资料</span>';
+                clonedEditToggle.classList.remove('btn-active');
+            }
+
+            // Clean up toast elements inside clone
+            const clonedToastContainer = clone.querySelector('#toast-container');
+            if (clonedToastContainer) {
+                clonedToastContainer.innerHTML = '';
+            }
+
+            // Generate HTML document string
+            const htmlContent = '<!DOCTYPE html>\n' + clone.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            
+            // Create download anchor
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'index.html';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            // Clean up
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
+
+            showNotification('您的修改已导出，浏览器将自动下载最新的 index.html 文件！');
+            
+            // Re-apply editing state if they were editing
+            if (isEditing) {
+                editableElements.forEach(el => {
+                    el.setAttribute('contenteditable', 'true');
+                    el.classList.add('editing-active');
+                });
+                if (avatarContainer) {
+                    avatarContainer.classList.add('editing-active');
+                }
+            }
+        }
+
+        // Notification System
+        function showNotification(message, duration = 3000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = '<i data-lucide="info" style="width: 16px; height: 16px; color: var(--accent-color);"></i><span>' + message + '</span>';
+            container.appendChild(toast);
+            
+            // Render icon inside the new toast
+            lucide.createIcons();
+            
+            // Fade-in trigger
+            setTimeout(() => toast.classList.add('show'), 50);
+            
+            // Auto fade-out & remove
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+    </script>
+</body>
+</html>
